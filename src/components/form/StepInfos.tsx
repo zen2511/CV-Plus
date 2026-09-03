@@ -1,7 +1,7 @@
 import Field from "@/components/ui/Field";
 import SearchableSelect from "@/components/ui/SearchableSelect";
 import { InfosData } from "@/types/candidature";
-import { VILLES } from "@/lib/options";
+import { VILLES, TRANCHES_EXPERIENCE } from "@/lib/options";
 import { SECTEURS, NIVEAUX_QUALIFICATION, getMetiersDuSecteur } from "@/lib/metiers";
 
 interface Props {
@@ -127,7 +127,7 @@ export default function StepInfos({ data, onChange, errors }: Props) {
         )}
       </div>
 
-      <div>
+           <div>
         <label className="mb-1 block text-sm text-slate-600">
           Niveau de qualification
         </label>
@@ -140,6 +140,24 @@ export default function StepInfos({ data, onChange, errors }: Props) {
           {NIVEAUX_QUALIFICATION.map((n) => (
             <option key={n} value={n}>
               {n}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm text-slate-600">
+          Années d&apos;expérience totale
+        </label>
+        <select
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
+          value={data.anneesExperience}
+          onChange={(e) => set("anneesExperience", e.target.value)}
+        >
+          <option value="">-</option>
+          {TRANCHES_EXPERIENCE.map((t) => (
+            <option key={t} value={t}>
+              {t}
             </option>
           ))}
         </select>

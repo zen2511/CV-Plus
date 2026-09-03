@@ -48,3 +48,11 @@ export const COMPETENCES = [
   "AutoCAD", "Génie civil", "Électricité", "Mécanique", "Topographie",
   "Soins infirmiers", "Pédagogie", "Agronomie", "Logistique",
 ];
+export const TRANCHES_EXPERIENCE = [
+  "Aucune expérience",
+  "Moins d'1 an",
+  "1 à 3 ans",
+  "3 à 5 ans",
+  "5 à 10 ans",
+  "Plus de 10 ans",
+];

@@ -8,6 +8,7 @@ export interface InfosData {
   secteurActivite: string;
   metier: string;
   niveauQualification: string;
+  anneesExperience: string;
 }
 
 export interface FormationData {
@@ -56,6 +57,7 @@ export const emptyCandidature: CandidatureFormData = {
     secteurActivite: "",
     metier: "",
     niveauQualification: "",
+    anneesExperience: "",
   },
   formations: [
     { niveau: "", etablissement: "", diplome: "", anneeDebut: "", anneeFin: "" },

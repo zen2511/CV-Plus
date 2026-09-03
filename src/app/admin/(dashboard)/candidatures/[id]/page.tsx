@@ -58,9 +58,32 @@ export default async function CandidatDetailPage({
         <ScoreBadge score={candidat.score} />
       </div>
 
-      <div className="mb-5 flex flex-col gap-1 text-sm text-slate-600">
+            <div className="mb-5 flex flex-col gap-1 text-sm text-slate-600">
         <p>Email : {candidat.email}</p>
         {candidat.telephone && <p>Téléphone : {candidat.telephone}</p>}
+      </div>
+
+      <div className="mb-5 flex flex-wrap gap-2">
+        {candidat.secteurActivite && (
+          <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
+            {candidat.secteurActivite}
+          </span>
+        )}
+        {candidat.metier && (
+          <span className="rounded-md bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+            {candidat.metier}
+          </span>
+        )}
+        {candidat.niveauQualification && (
+          <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
+            {candidat.niveauQualification}
+          </span>
+        )}
+        {candidat.anneesExperience && (
+          <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800">
+            {candidat.anneesExperience}
+          </span>
+        )}
       </div>
 
       {candidat.formations.length > 0 && (

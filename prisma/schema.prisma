@@ -32,6 +32,7 @@ model Candidat {
   metier               String?
   metierCode           String?
   niveauQualification  String?
+  anneesExperience     String?
   photoUrl             String?
   titre                String?
   statut               Statut       @default(EN_ATTENTE)

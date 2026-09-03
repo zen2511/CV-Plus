@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
           ? getMetierCode(infos.secteurActivite, infos.metier)
           : null,
       niveauQualification: infos.niveauQualification || null,
+      anneesExperience: infos.anneesExperience || null,
       titre: infos.titre || null,
       score,
       formations: {
