@@ -32,8 +32,9 @@ model Candidat {
   titre               String?
   secteurActivite     String?
   metier              String?
+  metierCode          String?
   niveauQualification String?
-  anneesExperience    Int?
+  anneesExperience    String?
   statut              Statut       @default(EN_ATTENTE)
   score               Int          @default(0)
   dateEnvoi           DateTime     @default(now())
