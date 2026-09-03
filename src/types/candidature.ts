@@ -5,6 +5,9 @@ export interface InfosData {
   telephone: string;
   ville: string;
   titre: string;
+  secteurActivite: string;
+  metier: string;
+  niveauQualification: string;
 }
 
 export interface FormationData {
@@ -20,6 +23,7 @@ export interface ExperienceData {
   entreprise: string;
   dateDebut: string;
   dateFin: string;
+  posteActuel: boolean;
   description: string;
 }
 
@@ -42,12 +46,29 @@ export interface CandidatureFormData {
 }
 
 export const emptyCandidature: CandidatureFormData = {
-  infos: { nom: "", prenom: "", email: "", telephone: "", ville: "", titre: "" },
+  infos: {
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    ville: "",
+    titre: "",
+    secteurActivite: "",
+    metier: "",
+    niveauQualification: "",
+  },
   formations: [
     { niveau: "", etablissement: "", diplome: "", anneeDebut: "", anneeFin: "" },
   ],
   experiences: [
-    { poste: "", entreprise: "", dateDebut: "", dateFin: "", description: "" },
+    {
+      poste: "",
+      entreprise: "",
+      dateDebut: "",
+      dateFin: "",
+      posteActuel: false,
+      description: "",
+    },
   ],
   competences: [],
   langues: [{ nom: "", niveau: "Courant" }],
