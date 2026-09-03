@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import type { TypeCritere } from "@prisma/client";
+
+const TYPES_VALIDES: TypeCritere[] = ["MOT_CLE", "EXPERIENCE_MIN", "LANGUE"];
 
 export async function PATCH(
   req: NextRequest,
@@ -15,13 +18,18 @@ export async function PATCH(
   const body = await req.json();
   const { poids, actif, nom, type, valeur } = body ?? {};
 
+  const typeValide =
+    typeof type === "string" && TYPES_VALIDES.includes(type as TypeCritere)
+      ? (type as TypeCritere)
+      : undefined;
+
   const critere = await prisma.critereScoring.update({
     where: { id },
     data: {
       ...(typeof poids === "number" ? { poids } : {}),
       ...(typeof actif === "boolean" ? { actif } : {}),
       ...(typeof nom === "string" ? { nom } : {}),
-      ...(typeof type === "string" ? { type } : {}),
+      ...(typeValide ? { type: typeValide } : {}),
       ...(valeur !== undefined ? { valeur } : {}),
     },
   });

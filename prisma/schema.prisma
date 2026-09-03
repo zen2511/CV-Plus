@@ -22,18 +22,22 @@ model Admin {
 }
 
 model Candidat {
-  id          String       @id @default(uuid())
-  nom         String
-  prenom      String
-  email       String
-  telephone   String?
-  ville       String?
-  photoUrl    String?
-  titre       String?
-  statut      Statut       @default(EN_ATTENTE)
-  score       Int          @default(0)
-  dateEnvoi   DateTime     @default(now())
-  dateTraite  DateTime?
+  id                  String       @id @default(uuid())
+  nom                 String
+  prenom              String
+  email               String
+  telephone           String?
+  ville               String?
+  photoUrl            String?
+  titre               String?
+  secteurActivite     String?
+  metier              String?
+  niveauQualification String?
+  anneesExperience    Int?
+  statut              Statut       @default(EN_ATTENTE)
+  score               Int          @default(0)
+  dateEnvoi           DateTime     @default(now())
+  dateTraite          DateTime?
 
   formations   Formation[]
   experiences  Experience[]

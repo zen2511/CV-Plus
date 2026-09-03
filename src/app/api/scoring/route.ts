@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import type { TypeCritere } from "@prisma/client";
+
+const TYPES_VALIDES: TypeCritere[] = ["MOT_CLE", "EXPERIENCE_MIN", "LANGUE"];
 
 async function getOrCreateAdminId() {
   // Un seul admin gère le scoring pour l'instant.
@@ -39,12 +42,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const typeValide =
+    typeof type === "string" && TYPES_VALIDES.includes(type as TypeCritere)
+      ? (type as TypeCritere)
+      : "MOT_CLE";
+
   const critere = await prisma.critereScoring.create({
     data: {
       adminId,
       nom,
       poids,
-      type: type ?? "MOT_CLE",
+      type: typeValide,
       valeur: valeur ?? null,
     },
   });
