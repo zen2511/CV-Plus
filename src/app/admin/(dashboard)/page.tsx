@@ -4,7 +4,6 @@ export const dynamic = "force-dynamic";
 
 const JOURS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
-const JOURS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
 async function getStats() {
   const [total, enAttente, acceptes, refuses, meilleurs] = await Promise.all([
