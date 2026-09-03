@@ -1,20 +1,7 @@
-import { auth } from "@/lib/auth";
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
-  const isLoginPage = req.nextUrl.pathname === "/admin/login";
-
-  if (!isLoggedIn && !isLoginPage) {
-    const loginUrl = new URL("/admin/login", req.nextUrl.origin);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  if (isLoggedIn && isLoginPage) {
-    const dashboardUrl = new URL("/admin", req.nextUrl.origin);
-    return NextResponse.redirect(dashboardUrl);
-  }
-});
+export default NextAuth(authConfig).auth;
 
 export const config = {
   matcher: ["/admin/:path*"],
