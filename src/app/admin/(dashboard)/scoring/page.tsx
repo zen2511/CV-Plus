@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import SearchableSelect from "@/components/ui/SearchableSelect";
+import { COMPETENCES } from "@/lib/options";
 
 interface Critere {
   id: string;
@@ -24,6 +26,11 @@ export default function ScoringPage() {
       .catch(() => setError("Impossible de charger les critères."))
       .finally(() => setLoading(false));
   }, []);
+
+  // On ne propose que les compétences pas déjà utilisées comme critère
+  const competencesDisponibles = COMPETENCES.filter(
+    (c) => !criteres.some((cr) => cr.nom === c)
+  );
 
   function updateLocal(id: string, poids: number) {
     setCriteres((prev) =>
@@ -141,27 +148,33 @@ export default function ScoringPage() {
         )}
       </div>
 
-      <form onSubmit={handleAdd} className="mt-4 flex gap-2">
-        <input
-          type="text"
-          value={newNom}
-          onChange={(e) => setNewNom(e.target.value)}
-          placeholder="Nom du critère (ex: React)"
-          className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
-        />
-        <input
-          type="number"
-          min={0}
-          max={100}
-          value={newPoids}
-          onChange={(e) => setNewPoids(Number(e.target.value))}
-          className="w-16 rounded-md border border-slate-300 px-2 py-2 text-sm"
-        />
+      <form onSubmit={handleAdd} className="mt-4 flex flex-col gap-2">
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <SearchableSelect
+              id="nouveau-critere"
+              label=""
+              value={newNom}
+              options={competencesDisponibles}
+              onChange={setNewNom}
+              placeholder="Choisir une compétence..."
+            />
+          </div>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            value={newPoids}
+            onChange={(e) => setNewPoids(Number(e.target.value))}
+            className="h-[38px] w-16 shrink-0 rounded-md border border-slate-300 px-2 text-sm"
+          />
+        </div>
         <button
           type="submit"
-          className="rounded-md border border-blue-300 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50"
+          disabled={!newNom.trim()}
+          className="rounded-md border border-blue-300 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50 disabled:opacity-40"
         >
-          + Ajouter
+          + Ajouter comme critère
         </button>
       </form>
 

@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import ScoreBadge from "@/components/admin/ScoreBadge";
-import { statutLabel } from "@/lib/ui";
+import CandidatureRow from "@/components/admin/CandidatureRow";
+import { SECTEURS, NIVEAUX_QUALIFICATION } from "@/lib/metiers";
 import type { Prisma } from "@prisma/client";
 
 interface SearchParams {
   q?: string;
   ville?: string;
   diplome?: string;
+  secteur?: string;
+  metier?: string;
+  niveau?: string;
 }
 
 async function getFiltres() {
@@ -45,6 +48,15 @@ async function getCandidats(params: SearchParams) {
       some: { diplome: { equals: params.diplome, mode: "insensitive" } },
     };
   }
+  if (params.secteur) {
+    where.secteurActivite = { equals: params.secteur, mode: "insensitive" };
+  }
+  if (params.metier) {
+    where.metier = { equals: params.metier, mode: "insensitive" };
+  }
+  if (params.niveau) {
+    where.niveauQualification = { equals: params.niveau, mode: "insensitive" };
+  }
 
   return prisma.candidat.findMany({
     where,
@@ -65,80 +77,136 @@ export default async function CandidaturesPage({
     prisma.candidat.count(),
   ]);
 
+  const aUnFiltreActif =
+    params.q || params.ville || params.diplome || params.secteur || params.metier || params.niveau;
+
   return (
     <div className="p-6">
       <p className="text-lg font-medium text-slate-900">
         Candidatures reçues
       </p>
-      <p className="mb-5 text-sm text-slate-500">{total} CV reçus</p>
+      <p className="mb-5 text-sm text-slate-500">
+        {candidats.length} résultat{candidats.length > 1 ? "s" : ""} sur {total} CV reçus
+      </p>
 
-      <form className="mb-5 flex flex-col gap-2 sm:flex-row" method="GET">
+      <form className="mb-5 flex flex-col gap-2" method="GET">
         <input
           type="text"
           name="q"
           defaultValue={params.q ?? ""}
-          placeholder="Rechercher un candidat"
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600 sm:flex-1"
+          placeholder="Rechercher un candidat (nom, prénom, email)"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
         />
-        <select
-          name="ville"
-          defaultValue={params.ville ?? ""}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm sm:w-40"
-        >
-          <option value="">Ville</option>
-          {villes.map((v) => (
-            <option key={v} value={v}>
-              {v}
-            </option>
-          ))}
-        </select>
-        <select
-          name="diplome"
-          defaultValue={params.diplome ?? ""}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm sm:w-40"
-        >
-          <option value="">Diplôme</option>
-          {diplomes.map((d) => (
-            <option key={d} value={d}>
-              {d}
-            </option>
-          ))}
-        </select>
-        <button
-          type="submit"
-          className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white"
-        >
-          Filtrer
-        </button>
+
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+          <select
+            name="ville"
+            defaultValue={params.ville ?? ""}
+            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+          >
+            <option value="">Ville</option>
+            {villes.map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="secteur"
+            defaultValue={params.secteur ?? ""}
+            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+          >
+            <option value="">Secteur</option>
+            {SECTEURS.map((s) => (
+              <option key={s.code} value={s.nom}>
+                {s.nom}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="metier"
+            defaultValue={params.metier ?? ""}
+            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+          >
+            <option value="">Métier</option>
+            {SECTEURS.map((s) => (
+              <optgroup key={s.code} label={s.nom}>
+                {s.metiers.map((m) => (
+                  <option key={m.code} value={m.nom}>
+                    {m.nom}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+
+          <select
+            name="niveau"
+            defaultValue={params.niveau ?? ""}
+            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+          >
+            <option value="">Niveau</option>
+            {NIVEAUX_QUALIFICATION.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="diplome"
+            defaultValue={params.diplome ?? ""}
+            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+          >
+            <option value="">Diplôme</option>
+            {diplomes.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+
+          <button
+            type="submit"
+            className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white"
+          >
+            Filtrer
+          </button>
+        </div>
+
+        {aUnFiltreActif && (
+          <Link
+            href="/admin/candidatures"
+            className="self-start text-xs text-slate-500 underline"
+          >
+            Réinitialiser les filtres
+          </Link>
+        )}
       </form>
 
-      <div className="flex flex-col gap-2">
+           <div className="flex flex-col gap-2">
         {candidats.length === 0 && (
           <p className="text-sm text-slate-400">Aucune candidature ne correspond à ces filtres.</p>
         )}
         {candidats.map((c) => (
-          <Link
+          <CandidatureRow
             key={c.id}
-            href={`/admin/candidatures/${c.id}`}
-            className="flex items-center justify-between rounded-md border border-slate-200 bg-white px-4 py-3 text-sm transition hover:border-blue-300"
-          >
-            <div>
-              <p className="font-medium text-slate-900">
-                {c.prenom} {c.nom}
-              </p>
-              <p className="mt-0.5 text-xs text-slate-500">
-                {[c.ville, c.formations[0]?.diplome, c.dateEnvoi.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </p>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <ScoreBadge score={c.score} />
-              <span className="text-[11px] text-slate-400">
-                {statutLabel(c.statut)}
-              </span>
-            </div>
-          </Link>
+            id={c.id}
+            nom={c.nom}
+            prenom={c.prenom}
+            score={c.score}
+            statut={c.statut}
+            sousLigne={[
+              c.metier,
+              c.ville,
+              c.formations[0]?.diplome,
+              c.dateEnvoi.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" }),
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          />
         ))}
       </div>
     </div>

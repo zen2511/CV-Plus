@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
+
+const JOURS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 import ScoreBadge from "@/components/admin/ScoreBadge";
 import DeleteCandidatButton from "@/components/admin/DeleteCandidatButton";
 
