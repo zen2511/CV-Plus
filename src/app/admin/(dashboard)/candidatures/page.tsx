@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import CandidatureRow from "@/components/admin/CandidatureRow";
-import { SECTEURS, NIVEAUX_QUALIFICATION } from "@/lib/metiers";
+import CandidatureFilters from "@/components/admin/CandidatureFilters";
 import type { Prisma } from "@prisma/client";
 
 interface SearchParams {
@@ -89,103 +88,18 @@ export default async function CandidaturesPage({
         {candidats.length} résultat{candidats.length > 1 ? "s" : ""} sur {total} CV reçus
       </p>
 
-      <form className="mb-5 flex flex-col gap-2" method="GET">
-        <input
-          type="text"
-          name="q"
-          defaultValue={params.q ?? ""}
-          placeholder="Rechercher un candidat (nom, prénom, email)"
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
-        />
-
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-          <select
-            name="ville"
-            defaultValue={params.ville ?? ""}
-            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-          >
-            <option value="">Ville</option>
-            {villes.map((v) => (
-              <option key={v} value={v}>
-                {v}
-              </option>
-            ))}
-          </select>
-
-          <select
-            name="secteur"
-            defaultValue={params.secteur ?? ""}
-            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-          >
-            <option value="">Secteur</option>
-            {SECTEURS.map((s) => (
-              <option key={s.code} value={s.nom}>
-                {s.nom}
-              </option>
-            ))}
-          </select>
-
-          <select
-            name="metier"
-            defaultValue={params.metier ?? ""}
-            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-          >
-            <option value="">Métier</option>
-            {SECTEURS.map((s) => (
-              <optgroup key={s.code} label={s.nom}>
-                {s.metiers.map((m) => (
-                  <option key={m.code} value={m.nom}>
-                    {m.nom}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-
-          <select
-            name="niveau"
-            defaultValue={params.niveau ?? ""}
-            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-          >
-            <option value="">Niveau</option>
-            {NIVEAUX_QUALIFICATION.map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-
-          <select
-            name="diplome"
-            defaultValue={params.diplome ?? ""}
-            className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-          >
-            <option value="">Diplôme</option>
-            {diplomes.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
-
-          <button
-            type="submit"
-            className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white"
-          >
-            Filtrer
-          </button>
-        </div>
-
-        {aUnFiltreActif && (
-          <Link
-            href="/admin/candidatures"
-            className="self-start text-xs text-slate-500 underline"
-          >
-            Réinitialiser les filtres
-          </Link>
-        )}
-      </form>
-
+            <CandidatureFilters
+        villes={villes}
+        diplomes={diplomes}
+        defaultValues={{
+          q: params.q ?? "",
+          ville: params.ville ?? "",
+          diplome: params.diplome ?? "",
+          secteur: params.secteur ?? "",
+          metier: params.metier ?? "",
+          niveau: params.niveau ?? "",
+        }}
+      />
            <div className="flex flex-col gap-2">
         {candidats.length === 0 && (
           <p className="text-sm text-slate-400">Aucune candidature ne correspond à ces filtres.</p>
