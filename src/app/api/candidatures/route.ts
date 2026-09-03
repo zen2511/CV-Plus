@@ -39,7 +39,6 @@ export async function POST(req: NextRequest) {
       email: infos.email.trim(),
       telephone: infos.telephone || null,
       ville: infos.ville || null,
-            ville: infos.ville || null,
       secteurActivite: infos.secteurActivite || null,
       metier: infos.metier || null,
       metierCode:
@@ -47,7 +46,6 @@ export async function POST(req: NextRequest) {
           ? getMetierCode(infos.secteurActivite, infos.metier)
           : null,
       niveauQualification: infos.niveauQualification || null,
-      titre: infos.titre || null,
       titre: infos.titre || null,
       score,
       formations: {
