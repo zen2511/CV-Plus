@@ -13,13 +13,16 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json();
-  const { poids, actif } = body ?? {};
+  const { poids, actif, nom, type, valeur } = body ?? {};
 
   const critere = await prisma.critereScoring.update({
     where: { id },
     data: {
       ...(typeof poids === "number" ? { poids } : {}),
       ...(typeof actif === "boolean" ? { actif } : {}),
+      ...(typeof nom === "string" ? { nom } : {}),
+      ...(typeof type === "string" ? { type } : {}),
+      ...(valeur !== undefined ? { valeur } : {}),
     },
   });
 

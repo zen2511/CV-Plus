@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { nom, poids } = body ?? {};
+  const { nom, poids, type, valeur } = body ?? {};
   if (!nom || typeof poids !== "number") {
     return NextResponse.json(
       { error: "nom et poids (nombre) sont requis" },
@@ -40,7 +40,13 @@ export async function POST(req: NextRequest) {
   }
 
   const critere = await prisma.critereScoring.create({
-    data: { adminId, nom, poids },
+    data: {
+      adminId,
+      nom,
+      poids,
+      type: type ?? "MOT_CLE",
+      valeur: valeur ?? null,
+    },
   });
 
   return NextResponse.json(critere, { status: 201 });
