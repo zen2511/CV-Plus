@@ -11,6 +11,7 @@ const emptyExperience: ExperienceData = {
   entreprise: "",
   dateDebut: "",
   dateFin: "",
+  posteActuel: false,
   description: "",
 };
 
@@ -60,21 +61,43 @@ export default function StepExperience({ data, onChange }: Props) {
             onChange={(e) => update(i, { entreprise: e.target.value })}
           />
           <div className="grid grid-cols-2 gap-3">
-            <Field
-              id={`debut-${i}`}
-              label="Début"
-              placeholder="06/2025"
-              value={exp.dateDebut}
-              onChange={(e) => update(i, { dateDebut: e.target.value })}
-            />
-            <Field
-              id={`fin-${i}`}
-              label="Fin"
-              placeholder="En cours"
-              value={exp.dateFin}
-              onChange={(e) => update(i, { dateFin: e.target.value })}
-            />
+            <div>
+              <label className="mb-1 block text-sm text-slate-600">
+                Début
+              </label>
+              <input
+                type="month"
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
+                value={exp.dateDebut}
+                onChange={(e) => update(i, { dateDebut: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm text-slate-600">Fin</label>
+              <input
+                type="month"
+                disabled={exp.posteActuel}
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600 disabled:bg-slate-100"
+                value={exp.dateFin}
+                onChange={(e) => update(i, { dateFin: e.target.value })}
+              />
+            </div>
           </div>
+
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input
+              type="checkbox"
+              checked={exp.posteActuel}
+              onChange={(e) =>
+                update(i, {
+                  posteActuel: e.target.checked,
+                  dateFin: e.target.checked ? "" : exp.dateFin,
+                })
+              }
+            />
+            J&apos;occupe actuellement ce poste
+          </label>
+
           <div>
             <label className="mb-1 block text-sm text-slate-600">
               Description
