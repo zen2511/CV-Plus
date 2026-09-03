@@ -1,6 +1,7 @@
-import { useState } from "react";
+import SearchableMultiSelect from "@/components/ui/SearchableMultiSelect";
 import Field from "@/components/ui/Field";
 import { LangueData } from "@/types/candidature";
+import { COMPETENCES } from "@/lib/options";
 
 interface Props {
   competences: string[];
@@ -21,20 +22,6 @@ export default function StepCompetences({
   onChangeLangues,
   onChangeLiens,
 }: Props) {
-  const [input, setInput] = useState("");
-
-  function addCompetence() {
-    const value = input.trim();
-    if (value && !competences.includes(value)) {
-      onChangeCompetences([...competences, value]);
-    }
-    setInput("");
-  }
-
-  function removeCompetence(c: string) {
-    onChangeCompetences(competences.filter((x) => x !== c));
-  }
-
   function updateLangue(i: number, patch: Partial<LangueData>) {
     onChangeLangues(langues.map((l, idx) => (idx === i ? { ...l, ...patch } : l)));
   }
@@ -45,40 +32,13 @@ export default function StepCompetences({
         Compétences et liens
       </p>
 
-      <div>
-        <label className="mb-1 block text-sm text-slate-600">
-          Compétences techniques
-        </label>
-        <div className="mb-2 flex flex-wrap gap-2">
-          {competences.map((c) => (
-            <span
-              key={c}
-              className="flex items-center gap-1 rounded-md bg-blue-100 px-2 py-1 text-xs text-blue-800"
-            >
-              {c}
-              <button
-                type="button"
-                onClick={() => removeCompetence(c)}
-                aria-label={`Retirer ${c}`}
-              >
-                ×
-              </button>
-            </span>
-          ))}
-        </div>
-        <input
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
-          placeholder="Ajouter une compétence et Entrée"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              addCompetence();
-            }
-          }}
-        />
-      </div>
+      <SearchableMultiSelect
+        id="competences"
+        label="Compétences techniques"
+        values={competences}
+        options={COMPETENCES}
+        onChange={onChangeCompetences}
+      />
 
       <div>
         <label className="mb-1 block text-sm text-slate-600">Langues</label>
