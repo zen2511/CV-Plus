@@ -5,6 +5,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { SECTEURS } from "@/lib/metiers";
+import Image from "next/image";
 
 const ICONES: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   BTP: HardHat,
@@ -27,28 +28,38 @@ export default function Home() {
 
   return (
     <div className="flex flex-1 flex-col">
-      {/* Hero */}
-      <section className="bg-navy-deep px-6 py-20 text-white sm:py-28">
-        <div className="mx-auto flex max-w-3xl flex-col items-start gap-6">
-          <span className="rounded-full bg-gold px-3 py-1 text-xs font-medium tracking-wide text-navy-deep">
-            CV+
-          </span>
-          <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">
+            {/* Hero */}
+      <section className="relative overflow-hidden px-6 py-20 sm:py-28">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-[380px] w-[380px] rounded-full bg-gold/20 blur-[110px]" />
+          <div className="absolute h-[300px] w-[300px] -translate-y-6 translate-x-32 rounded-full bg-navy/15 blur-[100px]" />
+        </div>
+
+        <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+          <Image
+            src="/logo-mbs.png"
+            alt="MBS HR Solutions"
+            width={170}
+            height={170}
+            priority
+            className="drop-shadow-[0_10px_40px_rgba(22,48,92,0.25)]"
+          />
+          <h1 className="font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
             Votre profil, entre de bonnes mains.
           </h1>
-          <p className="max-w-xl text-lg leading-8 text-white/75">
-            De l&apos;atelier au bureau, CV+ recueille votre parcours et le
-            met directement entre les mains des recruteurs qui cherchent
-            votre métier — sans détour.
+          <p className="max-w-xl text-lg leading-8 text-slate">
+            De l&apos;atelier au bureau, CV+MBS recueille votre parcours et
+            le met directement entre les mains des recruteurs qui
+            cherchent votre métier — sans détour.
           </p>
           <Link
             href="/postuler"
-            className="mt-2 inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3 text-base font-medium text-navy-deep transition hover:bg-gold-soft"
+            className="mt-2 inline-flex items-center gap-2 rounded-full bg-navy px-7 py-3 text-base font-medium text-white transition hover:bg-navy-deep"
           >
             Postuler maintenant
             <ArrowRight size={18} />
           </Link>
-          <p className="text-sm text-white/50">
+          <p className="text-sm text-slate">
             {SECTEURS.length} secteurs · {totalMetiers} métiers référencés
           </p>
         </div>
