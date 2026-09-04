@@ -17,7 +17,7 @@ export default function PostulerPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<CandidatureFormData>(emptyCandidature);
-  const [infosErrors, setInfosErrors] = useState<
+  const [infosErrors, setInfosErrors] = useState
     Partial<Record<keyof CandidatureFormData["infos"], string>>
   >({});
   const [submitting, setSubmitting] = useState(false);
@@ -68,13 +68,21 @@ export default function PostulerPage() {
   }
 
   return (
-    <main className="flex min-h-screen justify-center bg-slate-50 px-4 py-10">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      {/* Halo rétro-éclairage */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="h-[420px] w-[420px] rounded-full bg-gold/25 blur-[110px]" />
+        <div className="absolute h-[320px] w-[320px] translate-x-28 translate-y-6 rounded-full bg-navy/25 blur-[100px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-line bg-white/90 p-6 shadow-[0_0_70px_-20px_rgba(198,138,31,0.4)] backdrop-blur-sm">
         <div className="mb-5 flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 text-xs font-medium text-blue-700">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-navy text-xs font-medium text-gold">
             C+
           </div>
-          <span className="text-sm font-medium text-slate-900">CV+</span>
+          <span className="font-display text-sm font-medium text-ink">
+            CV+
+          </span>
         </div>
 
         <Stepper current={step} />
@@ -120,7 +128,7 @@ export default function PostulerPage() {
             type="button"
             onClick={prev}
             disabled={step === 1}
-            className="rounded-md border border-slate-300 px-4 py-2 text-sm disabled:opacity-40"
+            className="rounded-md border border-line px-4 py-2 text-sm text-ink disabled:opacity-40"
           >
             Précédent
           </button>
@@ -128,7 +136,7 @@ export default function PostulerPage() {
             <button
               type="button"
               onClick={next}
-              className="rounded-md bg-blue-700 px-5 py-2 text-sm font-medium text-white hover:bg-blue-800"
+              className="rounded-md bg-navy px-5 py-2 text-sm font-medium text-white hover:bg-navy-deep"
             >
               Suivant
             </button>
@@ -137,7 +145,7 @@ export default function PostulerPage() {
               type="button"
               onClick={submit}
               disabled={submitting}
-              className="rounded-md bg-blue-700 px-5 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-60"
+              className="rounded-md bg-gold px-5 py-2 text-sm font-medium text-navy-deep hover:bg-gold-soft disabled:opacity-60"
             >
               {submitting ? "Envoi..." : "Soumettre"}
             </button>

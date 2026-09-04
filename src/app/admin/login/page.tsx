@@ -45,9 +45,11 @@ export default function LoginPage() {
         className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
       >
         <div className="mb-6 flex flex-col items-center text-center">
-          <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-sm font-medium text-blue-700">
-            C+
-          </div>
+          <img
+  src="/logo-mbs.png"
+  alt="MBS HR Solutions"
+  className="mb-3 h-16 w-16 object-contain"
+/>
           <p className="text-base font-medium text-slate-900">
             Espace administrateur
           </p>

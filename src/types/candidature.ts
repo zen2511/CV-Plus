@@ -9,6 +9,7 @@ export interface InfosData {
   metier: string;
   niveauQualification: string;
   anneesExperience: string;
+  cvKey?: string | null;
 }
 
 export interface FormationData {

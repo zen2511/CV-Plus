@@ -25,8 +25,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="fr"
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-paper text-ink">
-        <Providers>{children}</Providers>
+      <body className="bg-watermark flex min-h-full flex-col bg-paper text-ink">
+        <div className="relative z-10 flex min-h-full flex-1 flex-col">
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );

@@ -29,3 +29,20 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans), Arial, sans-serif;
 }
+.bg-watermark {
+  position: relative;
+}
+
+.bg-watermark::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/logo-mbs.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(55vw, 620px);
+  opacity: 0.05;
+  filter: grayscale(1);
+  pointer-events: none;
+  z-index: 0;
+}

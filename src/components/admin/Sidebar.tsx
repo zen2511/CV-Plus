@@ -23,9 +23,11 @@ export default function Sidebar() {
 
   return (
     <aside className="flex h-full w-14 flex-col items-center gap-2 border-r border-slate-200 bg-slate-50 py-4">
-      <div className="mb-4 flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 text-xs font-medium text-blue-700">
-        C+
-      </div>
+      <img
+  src="/logo-mbs-icon.png"
+  alt="MBS HR Solutions"
+  className="mb-4 h-8 w-11 object-contain"
+/>
 
       <nav className="flex flex-1 flex-col gap-2">
         {LINKS.map(({ href, label, icon: Icon }) => {
