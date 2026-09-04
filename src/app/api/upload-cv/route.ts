@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadCv } from "@/lib/storage";
+import { getCvStore, generateCvKey } from "@/lib/storage";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5 Mo
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
-  const file = formData.get("file");
+  const file = formData.get("cv");
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "Aucun fichier reçu." }, { status: 400 });
@@ -23,8 +23,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const key = generateCvKey(file.name);
   const buffer = await file.arrayBuffer();
-  const key = await uploadCv(buffer);
 
-  return NextResponse.json({ key });
+  const store = getCvStore();
+  await store.set(key, buffer, {
+    metadata: { contentType: file.type, originalName: file.name },
+  });
+
+  return NextResponse.json({ key, name: file.name }, { status: 201 });
 }

@@ -1,5 +1,6 @@
 import Field from "@/components/ui/Field";
 import SearchableSelect from "@/components/ui/SearchableSelect";
+import CvUpload from "@/components/form/CvUpload";
 import { InfosData } from "@/types/candidature";
 import { VILLES, TRANCHES_EXPERIENCE } from "@/lib/options";
 import { SECTEURS, NIVEAUX_QUALIFICATION, getMetiersDuSecteur } from "@/lib/metiers";
@@ -8,11 +9,23 @@ interface Props {
   data: InfosData;
   onChange: (data: InfosData) => void;
   errors: Partial<Record<keyof InfosData, string>>;
+  cvKey: string;
+  cvName: string;
+  onCvUploaded: (key: string, name: string) => void;
+  onCvRemove: () => void;
 }
 
 const NOMS_SECTEURS = SECTEURS.map((s) => s.nom);
 
-export default function StepInfos({ data, onChange, errors }: Props) {
+export default function StepInfos({
+  data,
+  onChange,
+  errors,
+  cvKey,
+  cvName,
+  onCvUploaded,
+  onCvRemove,
+}: Props) {
   function set<K extends keyof InfosData>(key: K, value: InfosData[K]) {
     onChange({ ...data, [key]: value });
   }
@@ -27,10 +40,22 @@ export default function StepInfos({ data, onChange, errors }: Props) {
   );
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-base font-medium text-slate-900">
+        <div className="flex flex-col gap-3">
+      <p className="text-base font-medium text-ink">
         Informations personnelles
       </p>
+
+      <div>
+        <label className="mb-1 block text-sm text-slate">
+          CV (optionnel)
+        </label>
+        <CvUpload
+          cvKey={cvKey}
+          cvName={cvName}
+          onUploaded={onCvUploaded}
+          onRemove={onCvRemove}
+        />
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>

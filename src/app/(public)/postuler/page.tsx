@@ -2,28 +2,32 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Stepper from "@/components/form/Stepper";
 import StepInfos from "@/components/form/StepInfos";
 import StepFormation from "@/components/form/StepFormation";
 import StepExperience from "@/components/form/StepExperience";
 import StepCompetences from "@/components/form/StepCompetences";
 import { CandidatureFormData, emptyCandidature } from "@/types/candidature";
-import Image from "next/image";
-type InfosErrors = Partial<Record<keyof CandidatureFormData["infos"], string>>;
+
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+
+type InfosErrors = Partial<Record<keyof CandidatureFormData["infos"], string>>;
 
 export default function PostulerPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<CandidatureFormData>(emptyCandidature);
- const [infosErrors, setInfosErrors] = useState<InfosErrors>({});
+  const [cvKey, setCvKey] = useState("");
+  const [cvName, setCvName] = useState("");
+  const [infosErrors, setInfosErrors] = useState<InfosErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validateInfos() {
-    const errors: typeof infosErrors = {};
+    const errors: InfosErrors = {};
     if (!data.infos.nom.trim()) errors.nom = "Le nom est requis.";
     if (!data.infos.prenom.trim()) errors.prenom = "Le prénom est requis.";
     if (!data.infos.email.trim() || !isValidEmail(data.infos.email)) {
@@ -53,7 +57,7 @@ export default function PostulerPage() {
       const res = await fetch("/api/candidatures", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, cvKey }),
       });
       if (!res.ok) throw new Error("Échec de la soumission");
       router.push("/postuler/merci");
@@ -68,14 +72,13 @@ export default function PostulerPage() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      {/* Halo rétro-éclairage */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="h-[420px] w-[420px] rounded-full bg-gold/25 blur-[110px]" />
         <div className="absolute h-[320px] w-[320px] translate-x-28 translate-y-6 rounded-full bg-navy/25 blur-[100px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-line bg-white/90 p-6 shadow-[0_0_70px_-20px_rgba(198,138,31,0.4)] backdrop-blur-sm">
-                <div className="mb-5 flex items-center gap-2">
+        <div className="mb-5 flex items-center gap-2">
           <Image
             src="/logo-mbs.png"
             alt="MBS HR Solutions"
@@ -90,35 +93,47 @@ export default function PostulerPage() {
 
         <Stepper current={step} />
 
-        {step === 1 && (
-          <StepInfos
-            data={data.infos}
-            errors={infosErrors}
-            onChange={(infos) => setData({ ...data, infos })}
-          />
-        )}
-        {step === 2 && (
-          <StepFormation
-            data={data.formations}
-            onChange={(formations) => setData({ ...data, formations })}
-          />
-        )}
-        {step === 3 && (
-          <StepExperience
-            data={data.experiences}
-            onChange={(experiences) => setData({ ...data, experiences })}
-          />
-        )}
-        {step === 4 && (
-          <StepCompetences
-            competences={data.competences}
-            langues={data.langues}
-            liens={data.liens}
-            onChangeCompetences={(competences) => setData({ ...data, competences })}
-            onChangeLangues={(langues) => setData({ ...data, langues })}
-            onChangeLiens={(liens) => setData({ ...data, liens })}
-          />
-        )}
+        <div key={step} className="step-enter">
+          {step === 1 && (
+            <StepInfos
+              data={data.infos}
+              errors={infosErrors}
+              onChange={(infos) => setData({ ...data, infos })}
+              cvKey={cvKey}
+              cvName={cvName}
+              onCvUploaded={(key, name) => {
+                setCvKey(key);
+                setCvName(name);
+              }}
+              onCvRemove={() => {
+                setCvKey("");
+                setCvName("");
+              }}
+            />
+          )}
+          {step === 2 && (
+            <StepFormation
+              data={data.formations}
+              onChange={(formations) => setData({ ...data, formations })}
+            />
+          )}
+          {step === 3 && (
+            <StepExperience
+              data={data.experiences}
+              onChange={(experiences) => setData({ ...data, experiences })}
+            />
+          )}
+          {step === 4 && (
+            <StepCompetences
+              competences={data.competences}
+              langues={data.langues}
+              liens={data.liens}
+              onChangeCompetences={(competences) => setData({ ...data, competences })}
+              onChangeLangues={(langues) => setData({ ...data, langues })}
+              onChangeLiens={(liens) => setData({ ...data, liens })}
+            />
+          )}
+        </div>
 
         {submitError && (
           <p className="mt-3 text-sm text-red-600" role="alert">

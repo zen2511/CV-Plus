@@ -2,26 +2,17 @@ import { getStore } from "@netlify/blobs";
 
 const STORE_NAME = "cvs";
 
-function cvStore() {
+export function getCvStore() {
   return getStore(STORE_NAME);
 }
 
-/**
- * Stocke un CV PDF et renvoie la clé générée pour le retrouver plus tard.
- */
-export async function uploadCv(buffer: ArrayBuffer): Promise<string> {
-  const key = `${crypto.randomUUID()}.pdf`;
-  const store = cvStore();
-  await store.set(key, buffer, {
-    metadata: { uploadedAt: new Date().toISOString() },
-  });
-  return key;
+export function generateCvKey(originalName: string) {
+  const ext = originalName.toLowerCase().endsWith(".pdf") ? "pdf" : "pdf";
+  return `${crypto.randomUUID()}.${ext}`;
 }
 
-/**
- * Récupère le contenu binaire d'un CV PDF à partir de sa clé.
- */
 export async function getCv(key: string): Promise<ArrayBuffer | null> {
-  const store = cvStore();
-  return store.get(key, { type: "arrayBuffer" });
+  const store = getCvStore();
+  const fichier = await store.get(key, { type: "arrayBuffer" });
+  return fichier ?? null;
 }

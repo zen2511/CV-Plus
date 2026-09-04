@@ -63,6 +63,14 @@ export default async function CandidatDetailPage({
         {candidat.telephone && <p>Téléphone : {candidat.telephone}</p>}
       </div>
 
+      {candidat.cvKey && (
+        
+          href={`/api/candidatures/${candidat.id}/cv`}
+          className="mb-4 inline-flex items-center gap-2 rounded-md border border-navy px-4 py-2 text-sm font-medium text-navy hover:bg-navy hover:text-white"
+        >
+          Télécharger le CV (PDF)
+        </a>
+      )}
       <div className="mb-5 flex flex-wrap gap-2">
         {candidat.secteurActivite && (
           <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
