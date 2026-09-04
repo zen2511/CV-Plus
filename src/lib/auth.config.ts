@@ -9,6 +9,13 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
+      if (
+        process.env.MAINTENANCE_MODE === "true" &&
+        nextUrl.pathname !== "/maintenance"
+      ) {
+        return Response.redirect(new URL("/maintenance", nextUrl));
+      }
+
       const isLoggedIn = !!auth?.user;
       const isLoginPage = nextUrl.pathname === "/admin/login";
 
@@ -19,5 +26,5 @@ export const authConfig = {
       return true;
     },
   },
-  providers: [], // rempli dans auth.ts, laissé vide ici
+  providers: [],
 } satisfies NextAuthConfig;
