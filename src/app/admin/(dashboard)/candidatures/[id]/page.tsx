@@ -23,7 +23,7 @@ export default async function CandidatDetailPage({
 
   if (!candidat) notFound();
 
-  const initiales = `${candidat.prenom[0] ?? ""}${candidat.nom[0] ?? ""}`.toUpperCase();
+  const initiales = (candidat.prenom[0] ?? "" + candidat.nom[0] ?? "").toUpperCase();
 
   return (
     <div className="mx-auto max-w-xl p-6">
@@ -31,7 +31,7 @@ export default async function CandidatDetailPage({
         href="/admin/candidatures"
         className="mb-5 inline-block text-sm text-slate-500 hover:text-slate-700"
       >
-        ← Candidatures
+        Retour aux candidatures
       </Link>
 
       <div className="mb-5 flex items-center gap-3">
@@ -45,32 +45,33 @@ export default async function CandidatDetailPage({
           <p className="text-xs text-slate-500">
             {[
               candidat.ville,
-              `Envoyé le ${candidat.dateEnvoi.toLocaleDateString("fr-FR", {
+              "Envoye le " + candidat.dateEnvoi.toLocaleDateString("fr-FR", {
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
-              })}`,
+              }),
             ]
               .filter(Boolean)
-              .join(" · ")}
+              .join(" - ")}
           </p>
         </div>
         <ScoreBadge score={candidat.score} />
       </div>
 
-            <div className="mb-5 flex flex-col gap-1 text-sm text-slate-600">
+      <div className="mb-5 flex flex-col gap-1 text-sm text-slate-600">
         <p>Email : {candidat.email}</p>
-        {candidat.telephone && <p>Téléphone : {candidat.telephone}</p>}
+        {candidat.telephone && <p>Telephone : {candidat.telephone}</p>}
       </div>
 
       {candidat.cvKey && (
-        
-          href={`/api/candidatures/${candidat.id}/cv`}
-          className="mb-4 inline-flex items-center gap-2 rounded-md border border-navy px-4 py-2 text-sm font-medium text-navy hover:bg-navy hover:text-white"
+        <a
+          href={"/api/candidatures/" + candidat.id + "/cv"}
+          className="mb-5 inline-flex items-center gap-1.5 rounded-md border border-blue-300 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-50"
         >
-          Télécharger le CV (PDF)
+          Telecharger le CV (PDF)
         </a>
       )}
+
       <div className="mb-5 flex flex-wrap gap-2">
         {candidat.secteurActivite && (
           <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
@@ -99,12 +100,12 @@ export default async function CandidatDetailPage({
           {candidat.formations.map((f) => (
             <div key={f.id} className="mb-2">
               <p className="text-sm text-slate-900">
-                {f.niveau} {f.diplome && `— ${f.diplome}`}
-                {f.etablissement && ` — ${f.etablissement}`}
+                {f.niveau} {f.diplome && "- " + f.diplome}
+                {f.etablissement && " - " + f.etablissement}
               </p>
               {(f.anneeDebut || f.anneeFin) && (
                 <p className="text-xs text-slate-500">
-                  {f.anneeDebut ?? ""} – {f.anneeFin ?? ""}
+                  {f.anneeDebut ?? ""} - {f.anneeFin ?? ""}
                 </p>
               )}
             </div>
@@ -113,16 +114,16 @@ export default async function CandidatDetailPage({
       )}
 
       {candidat.experiences.length > 0 && (
-        <Section title="Expérience">
+        <Section title="Experience">
           {candidat.experiences.map((e) => (
             <div key={e.id} className="mb-2">
               <p className="text-sm text-slate-900">
-                {e.poste} — {e.entreprise}
+                {e.poste} - {e.entreprise}
               </p>
               <p className="text-xs text-slate-500">
                 {e.dateDebut?.toLocaleDateString("fr-FR", { month: "2-digit", year: "numeric" }) ?? ""}
-                {" – "}
-                {e.dateFin?.toLocaleDateString("fr-FR", { month: "2-digit", year: "numeric" }) ?? "présent"}
+                {" - "}
+                {e.dateFin?.toLocaleDateString("fr-FR", { month: "2-digit", year: "numeric" }) ?? "present"}
               </p>
               {e.description && (
                 <p className="mt-1 text-sm text-slate-600">{e.description}</p>
@@ -133,7 +134,7 @@ export default async function CandidatDetailPage({
       )}
 
       {candidat.competences.length > 0 && (
-        <Section title="Compétences">
+        <Section title="Competences">
           <div className="flex flex-wrap gap-2">
             {candidat.competences.map((c) => (
               <span
@@ -150,7 +151,7 @@ export default async function CandidatDetailPage({
       {candidat.langues.length > 0 && (
         <Section title="Langues">
           <p className="text-sm text-slate-600">
-            {candidat.langues.map((l) => `${l.nom} (${l.niveau})`).join(" · ")}
+            {candidat.langues.map((l) => l.nom + " (" + l.niveau + ")").join(" - ")}
           </p>
         </Section>
       )}
