@@ -23,7 +23,7 @@ export default async function CandidatDetailPage({
 
   if (!candidat) notFound();
 
-  const initiales = (candidat.prenom[0] ?? "" + candidat.nom[0] ?? "").toUpperCase();
+    const initiales = `${candidat.prenom.charAt(0)}${candidat.nom.charAt(0)}`.toUpperCase();
 
   return (
     <div className="mx-auto max-w-xl p-6">
