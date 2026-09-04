@@ -8,7 +8,7 @@ import StepFormation from "@/components/form/StepFormation";
 import StepExperience from "@/components/form/StepExperience";
 import StepCompetences from "@/components/form/StepCompetences";
 import { CandidatureFormData, emptyCandidature } from "@/types/candidature";
-
+import Image from "next/image";
 type InfosErrors = Partial<Record<keyof CandidatureFormData["infos"], string>>;
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -75,12 +75,16 @@ export default function PostulerPage() {
       </div>
 
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-line bg-white/90 p-6 shadow-[0_0_70px_-20px_rgba(198,138,31,0.4)] backdrop-blur-sm">
-        <div className="mb-5 flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-navy text-xs font-medium text-gold">
-            C+
-          </div>
+                <div className="mb-5 flex items-center gap-2">
+          <Image
+            src="/logo-mbs.png"
+            alt="MBS HR Solutions"
+            width={36}
+            height={36}
+            className="rounded-md"
+          />
           <span className="font-display text-sm font-medium text-ink">
-            CV+
+            CV+MBS
           </span>
         </div>
 
