@@ -9,6 +9,7 @@ import StepExperience from "@/components/form/StepExperience";
 import StepCompetences from "@/components/form/StepCompetences";
 import { CandidatureFormData, emptyCandidature } from "@/types/candidature";
 
+type InfosErrors = Partial<Record<keyof CandidatureFormData["infos"], string>>;
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -17,9 +18,7 @@ export default function PostulerPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<CandidatureFormData>(emptyCandidature);
-  const [infosErrors, setInfosErrors] = useState
-    Partial<Record<keyof CandidatureFormData["infos"], string>>
-  >({});
+ const [infosErrors, setInfosErrors] = useState<InfosErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 

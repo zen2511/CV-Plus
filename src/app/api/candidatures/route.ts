@@ -45,10 +45,10 @@ export async function POST(req: NextRequest) {
         infos.secteurActivite && infos.metier
           ? getMetierCode(infos.secteurActivite, infos.metier)
           : null,
-      niveauQualification: infos.niveauQualification || null,
-      anneesExperience: infos.anneesExperience ? Number(infos.anneesExperience) : null,
+          niveauQualification: infos.niveauQualification || null,
+      anneesExperience: infos.anneesExperience || null,
       titre: infos.titre || null,
-      cvKey: body.cvKey || null,
+      cvKey: (body as CandidatureFormData & { cvKey?: string }).cvKey || null,
       score,
       formations: {
         create: body.formations

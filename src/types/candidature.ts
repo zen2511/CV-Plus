@@ -33,7 +33,6 @@ export interface LangueData {
   nom: string;
   niveau: string;
 }
-
 export interface CandidatureFormData {
   infos: InfosData;
   formations: FormationData[];
@@ -45,8 +44,8 @@ export interface CandidatureFormData {
     github: string;
     portfolio: string;
   };
+  cvKey?: string;
 }
-
 export const emptyCandidature: CandidatureFormData = {
   infos: {
     nom: "",
