@@ -1,34 +1,40 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "CV+",
-  description: "Plateforme de recrutement pour les métiers du Cameroun",
+  title: "MBS Recrutement",
+  description: "Plateforme de récupération et de gestion intelligente de CV",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/icon-192.png",
+  },
+};
+
+export const viewport = {
+  themeColor: "#1D4ED8",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="fr"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="bg-watermark flex min-h-full flex-col bg-paper text-ink">
-        <div className="relative z-10 flex min-h-full flex-1 flex-col">
-          <Providers>{children}</Providers>
-        </div>
+      <body className="min-h-full flex flex-col">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
