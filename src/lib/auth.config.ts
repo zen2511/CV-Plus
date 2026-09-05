@@ -16,6 +16,10 @@ export const authConfig = {
         return Response.redirect(new URL("/maintenance", nextUrl));
       }
 
+      // L'authentification n'est requise que pour les pages /admin
+      const isAdminRoute = nextUrl.pathname.startsWith("/admin");
+      if (!isAdminRoute) return true;
+
       const isLoggedIn = !!auth?.user;
       const isLoginPage = nextUrl.pathname === "/admin/login";
 
