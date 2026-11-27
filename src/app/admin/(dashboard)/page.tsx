@@ -1,3 +1,5 @@
+import ExportButton from "@/components/ExportButton";>
+
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -52,11 +54,15 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6">
-      <p className="text-lg font-medium text-slate-900">Dashboard</p>
-      <p className="mb-6 text-sm text-slate-500">
-        Vue d&apos;ensemble des candidatures
-      </p>
-
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <p className="text-lg font-medium text-slate-900">Dashboard</p>
+          <p className="text-sm text-slate-500">
+            Vue d&apos;ensemble des candidatures
+          </p>
+        </div>
+        <ExportButton />
+      </div>
       <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard label="Total reçus" value={total} />
         <StatCard label="En attente" value={enAttente} />
