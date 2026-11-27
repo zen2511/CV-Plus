@@ -3,12 +3,9 @@ import { useState } from "react";
 
 export default function ExportButton() {
   const [open, setOpen] = useState(false);
-  const [ville, setVille] = useState("");
 
-  const go = (format: "excel" | "pdf") => {
-    const q = new URLSearchParams({ tri: "nom", ordre: "asc" });
-    if (ville.trim()) q.set("ville", ville.trim());
-    window.location.href = `/api/admin/export/${format}?${q}`;
+  const go = (format: "pdf" | "excel") => {
+    window.location.href = `/api/admin/export/${format}?v=${Date.now()}`;
   };
 
   return (
@@ -27,20 +24,17 @@ export default function ExportButton() {
             borderRadius: 10, padding: 12, width: 240,
             boxShadow: "0 4px 16px rgba(0,0,0,.15)" }}
         >
-          <input
-            placeholder="Ville (vide = toutes)"
-            value={ville}
-            onChange={(e) => setVille(e.target.value)}
-            style={{ width: "100%", padding: 8, border: "1px solid #ccc",
-                     borderRadius: 6, marginBottom: 8 }}
-          />
-          <p style={{ fontSize: 12, margin: "0 0 8px" }}>Ordre : A → Z (nom)</p>
-          <button onClick={() => go("excel")}
-            style={{ width: "100%", padding: 8, marginBottom: 6 }}>
-            Excel (.xlsx)
-          </button>
-          <button onClick={() => go("pdf")} style={{ width: "100%", padding: 8 }}>
+          <p style={{ fontSize: 12, margin: "0 0 8px" }}>
+            Toutes les candidatures, classées par ville (A → Z), puis par nom (A → Z)
+          </p>
+          <button
+            onClick={() => go("pdf")}
+            style={{ width: "100%", padding: 8, marginBottom: 6 }}
+          >
             PDF
+          </button>
+          <button onClick={() => go("excel")} style={{ width: "100%", padding: 8 }}>
+            Excel (.xlsx)
           </button>
         </div>
       )}
