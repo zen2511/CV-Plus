@@ -25,7 +25,7 @@ export async function GET(req: Request) {
 
   const candidats = await prisma.candidat.findMany({
     where,
-    orderBy: [{ [tri]: ordre }, { prenom: "asc" }] as any,
+    orderBy: [{ ville: "asc" }, { nom: "asc" }, { prenom: "asc" }],
     include: {
       formations: true, experiences: true,
       competences: true, langues: true, liens: true,
