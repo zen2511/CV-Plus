@@ -1,4 +1,4 @@
-import ExportButton from "@/components/ExportButton";>
+import ExportButton from "@/components/ExportButton";
 
 import { prisma } from "@/lib/prisma";
 
