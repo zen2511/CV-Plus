@@ -129,6 +129,7 @@ export async function GET(req: Request) {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": 'attachment; filename="cv-par-ville.pdf"',
+      "Cache-Control": "no-store",
     },
   });
       }
