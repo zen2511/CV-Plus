@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const clean = (s?: string | number | null) =>
   String(s ?? "").replace(/[^\x20-\x7E\xA0-\xFF]/g, "?");
